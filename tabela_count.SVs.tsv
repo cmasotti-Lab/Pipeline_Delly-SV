@@ -1,0 +1,30 @@
+sample	BND	DEL	DUP	INV	SV
+ROP-1				9	9
+ROP-102		1			1
+ROP-103		1			1
+ROP-110	1				1
+ROP-12	1				1
+ROP-122	1				1
+ROP-123				1	1
+ROP-14		1			1
+ROP-15		1		67	68
+ROP-17				29	29
+ROP-18				5	5
+ROP-19		1		21	22
+ROP-36	1				1
+ROP-37			1		1
+ROP-38				2	2
+ROP-46	1			9	10
+ROP-56				7	7
+ROP-58				184	184
+ROP-60				30	30
+ROP-61		2			2
+ROP-65				96	96
+ROP-69	1				1
+ROP-75	1				1
+ROP-78	1				1
+ROP-85				1	1
+ROP-86				1	1
+ROP-92				4	4
+ROP-93				2	2
+ROP-97				2	2
