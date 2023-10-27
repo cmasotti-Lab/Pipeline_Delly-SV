@@ -1,7 +1,8 @@
 # Pipeline_Delly-SV
 
 
-![image](https://github.com/cmasotti-Lab/Pipeline_Delly-SV/assets/11162991/f60430cb-a10d-430e-b8e3-13fc36fb2acb)
+![image](https://github.com/cmasotti-Lab/Pipeline_Delly-SV/pipeline_Delly_SV.png)
+![image](https://github.com/cmasotti-Lab/Pipeline_Delly-SV/assets/11162991/6ade8463-5275-4e21-b337-ddfb3d601151)
 
 This pipeline has been developed to identify Structural Variation (SV) in tumor-only exome data.
 
