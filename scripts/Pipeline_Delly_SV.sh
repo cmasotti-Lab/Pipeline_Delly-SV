@@ -6,7 +6,8 @@
 # PARAMETROS OBRIGATORIOS
 SCRATCH60="/home/scratch60/vlira_21set2023/"
 
-DATA=$(date "+%F") # EDITE SE QUISER USAR UMA PASTA DE UMA DATA ESPECIFICA 
+# DATA=$(date "+%F") # EDITE SE QUISER USAR UMA PASTA DE UMA DATA ESPECIFICA 
+DATA='2023-10-28'
 OUTPUT_DIR=$SCRATCH60"/Result_Delly_SV."$DATA
 
 INPUT_DIR="/home/scratch60/rtorreglosa_12novl2023/preprocessing_READ_result/"
@@ -112,8 +113,6 @@ export -f step5_DellyFilter
 
 
 step6_annovar (){
-  local SAMPLE=$1
-  local NAME="${SAMPLE##*/}"
   echo "" >> $OUTPUT_LOG
   echo ">>>>>> Executando step6_annovar  <<<" >> $OUTPUT_LOG
   date >> $OUTPUT_LOG
@@ -135,19 +134,19 @@ echo "                           >>>>>> Starting Pipeline to Run Pipeline_Delly_
 date >> $OUTPUT_LOG
 
 mkdir $OUTPUT_DIR/step1_DellyCall/
-xargs -a $OUTPUT_DIR/samples.list -t -n1 -P${JOBS} bash -c 'step1_DellyCall  "$@"' 'step1_DellyCall'
+#xargs -a $OUTPUT_DIR/samples.list -t -n1 -P${JOBS} bash -c 'step1_DellyCall  "$@"' 'step1_DellyCall'
 
 mkdir $OUTPUT_DIR/step2_DellyMerge/
-step2_DellyMerge
+#step2_DellyMerge
 
 mkdir $OUTPUT_DIR/step3_DellyCallGenotype/
-xargs -a $OUTPUT_DIR/samples.list -t -n1 -P${JOBS} bash -c 'step3_DellyCallGenotype  "$@"' 'step3_DellyCallGenotype'
+#xargs -a $OUTPUT_DIR/samples.list -t -n1 -P${JOBS} bash -c 'step3_DellyCallGenotype  "$@"' 'step3_DellyCallGenotype'
 
 mkdir $OUTPUT_DIR/step4_bcftoolsMergeGenotype/
-step4_bcftoolsMergeGenotype
+#step4_bcftoolsMergeGenotype
 
 mkdir $OUTPUT_DIR/step5_DellyFilter/
-step5_DellyFilter
+#step5_DellyFilter
 
 mkdir $OUTPUT_DIR/step6_annovar/
 step6_annovar
