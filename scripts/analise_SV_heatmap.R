@@ -8,11 +8,10 @@ library(maftools)
 library(ggplot2)
 library(ggpubr)
 library(stringr)
-
 library(pheatmap)
 
 
-wd <- "/media/vande/HDD/PROJETOS-HSL_BP/resultados_Exoma/"
+wd <- "D:/Github-Projects/Pipeline_Delly-SV/"
 setwd(wd)
 
 #                                        ===================================
@@ -22,6 +21,9 @@ setwd(wd)
 ##################################################
 ### CARREGANDO TABELAS DE RESULTADOS
 ##################################################
+
+
+
 dgenes<-fread("input_R/driver-genes.txt", header = F, col.names = "gene")
 dMMR<-fread("input_R/dMMR_genes.txt", header = F, col.names = "gene")
 
