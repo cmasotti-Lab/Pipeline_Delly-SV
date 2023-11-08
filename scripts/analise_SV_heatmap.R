@@ -14,13 +14,137 @@ library(pheatmap)
 wd <- "D:/Github-Projects/Pipeline_Delly-SV/"
 setwd(wd)
 
+output <- paste0("OUTPUT-SV_Filter_R.",Sys.Date())
+dir.create(output)
 #                                        ===================================
 #                                                ANALISE DOS RESULTADOS
 #                                        ===================================
 
-##################################################
-### CARREGANDO TABELAS DE RESULTADOS
-##################################################
+
+#==============================================================================#
+# STEP 0 -  Datasets reorganization ####
+#==============================================================================#
+all.sv<-fread("Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_multianno.txt", header = T)
+
+all.sv<- fread(file="Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_multianno.txt", header=T, sep="\t", na.strings=c(".","NA"), fill=TRUE, check.names = FALSE)
+samples_ID <-fread("Result_Delly_SV.2023-10-28/step6_annovar/sampleID.list", header = F)
+
+# Rename columns
+#==============================================================================#
+colnames(all.sv) <-  c( colnames(all.sv[,c(1:11)]),"Otherinfo1","Otherinfo2","Otherinfo3","CHR","POS","ID","REF","ALT","QUAL","FILTER", "INFO", "FORMAT", 
+                          samples_ID$V1)
+
+# Creating INDEX (CHR,POS,REF,ALT) and select the main columns
+#==============================================================================#
+all.sv$index <- all.sv$ID
+all.sv <-data.frame(all.sv)
+exCol=colnames(all.sv[,-which(names(all.sv) %in% c("Otherinfo1","Otherinfo2","Otherinfo3","ID","index"))])
+all.sv <- select(all.sv, index,all_of(exCol))
+dim(all.sv)   #19142   105 
+fwrite(all.sv, paste0(output,"/tab0.tsv"), quote = F, sep="\t")
+
+
+
+#==============================================================================#
+#                 STEP 1 - Clear dataset ####
+#==============================================================================#
+# tab1<-as.data.frame(fread(paste0(output,"/tab0.tsv"), header = T,  na.strings=c("NA"), fill=TRUE, check.names = FALSE))
+tab1<- all.sv
+
+
+## Restructure tables, all samples in the same column ###
+#==============================================================================#
+tab1 <- reshape2::melt(tab1,id=colnames(tab1[,1:which(names(tab1)== "FORMAT")]))
+colnames(tab1)[colnames(tab1) == "variable"] <- "SAMPLE"
+
+
+unique(tab1$FORMAT) #GT:GL:GQ:FT:RCL:RC:RCR:RDCN:DR:DV:RR:RV
+
+FORMAT<-strsplit(unique(tab1$FORMAT), ":")[[1]]
+tab2<- separate(data = tab1, col = value, into =FORMAT, sep = ":")
+
+table(tab2$GT)
+# tab2 <- tab2[!grepl("/\\.", tab2$GT),]
+tab2 <- tab2[!grepl("^0/0", tab2$GT),]
+tab2 <- tab2[!grepl("^0\\|0", tab2$GT),]
+tab2 <- tab2[!grepl("^\\./\\.", tab2$GT),]
+table(tab2$GT)
+
+#==============================================================================#
+### SEPARAR OS ALELOS DE CADA INDIVIDUO
+#==============================================================================#
+setDT(tab2)[,paste0("GT", 1:2) := tstrsplit(GT, "/")]
+#==============================================================================#
+
+tab2$SV <- substr(tab2$index, 1, 3)
+table(tab2$SV)
+table(tab2$GT)
+
+#==============================================================================#
+### AMOSTRAS EXCLUIDAS POR DADOS CLINICOS
+#==============================================================================#
+tab2$SAMPLE <- gsub("\\.", "-", tab2$SAMPLE)
+
+samples.excl <- c('ROP-116','ROP-118','ROP-120','ROP-121','ROP-122','ROP-123','ROP-125','ROP-126',
+                  'ROP-127','ROP-130','ROP-131','ROP-132','ROP-23','ROP-84',
+                  'ROP-83','ROP-107','ROP-81' ,'ROP-91' ,'ROP-129')
+samples.excl <-paste(samples.excl, collapse = "|" )
+
+tab2 <- tab2[!grepl(samples.excl, tab2$SAMPLE),]
+tab.info <- as.data.frame(tab2$INFO)
+
+
+table(tab2$SAMPLE,tab2$SV)
+
+
+#==============================================================================#
+#                 STEP 2 - FILTERS ####
+#==============================================================================#
+
+
+#==============================================================================#
+### SELECIONAR OS PRECISE & PASS
+#==============================================================================#
+tab3 <- tab2[grepl("^PRECISE", tab2$INFO),]
+table(tab3$SV)
+
+tab3 <- subset(tab3, FT == "PASS") 
+table(tab3$SV)
+
+
+# Quantificando mutações compartilhadas >=2
+#==============================================================================#
+aux <- data.frame(table(tab3$index))
+tab3 <- merge(tab3, aux, by.x = "index", by.y = "Var1")
+colnames(tab3)[names(tab3)=="Freq"]<-"MUTATION_shared"
+shared2exclude <- which((tab3$MUTATION_shared >= 2) )
+nrow(unique(tab3[shared2exclude,"index"]))  #3048 
+tab3 <- tab3[-shared2exclude,] 
+
+# selecionando evento em regiões codificadoras
+#==============================================================================#
+data.table(table(tab3$Func.refGene))
+# FALTA IMPLEMENTAR.  REMOVER APENAS OS EVENTOS (DEL, INV) QEU OCORREM EM REGIÃO INTRONICA
+
+location2keep_mut.xg <- c(
+  which(tab3$Func.refGene=="exonic"),
+  which(tab3$Func.refGene=="exonic;splicing"),
+  which(tab3$Func.refGene=="splicing"))
+tab3 <- tab3[location2keep_mut.xg,]
+
+tab3 <- subset(tab3, Func.refGene %in% c("splicing", "exonic", "exonic;splicing", "splicing;exonic"))
+
+
+
+table(tab3$SV)
+table(tab3$SAMPLE,tab3$SV)
+tab.count <- data.frame(table(tab3$SAMPLE,tab3$SV))
+tab.count<- as.data.frame(reshape2::dcast(tab.count, Var1 ~ Var2,  value.var = "Freq"))
+tab.count$SVs <- 
+  
+fwrite(tab3, paste0(output,"/tabela_all.SVs.tsv"), quote = F, sep="\t")
+fwrite(tab.count, paste0(output,"/tabela_count.SVs.tsv"), quote = F, sep="\t")
+
 
 
 
@@ -57,7 +181,7 @@ somatic_Samples.resp[somatic_Samples.resp$ID_Exoma %in% mutados$ID_Exoma]$dMMR <
 
 # CARREGANDO INFORMAÇÕES DE SVs
 #===================================#
-sv<- fread(file="../resultados_SV/tabela_count.SVs.tsv", header=T, sep="\t", fill=TRUE, check.names = FALSE)
+sv<- fread(file="OUTPUT-SV_Filter_R.2023-11-08/tabela_count.SVs.tsv", header=T, sep="\t", fill=TRUE, check.names = FALSE)
 sv<- as.data.frame(sv)
 sv<-sv %>% 
   mutate_all(replace_na, 0)

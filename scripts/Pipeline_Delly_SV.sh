@@ -125,6 +125,8 @@ step6_annovar (){
       --otherinfo --thread ${JOBS} --outfile $OUTPUT_DIR/step6_annovar/ROP-annovar 2> $OUTPUT_DIR/step6_annovar/ROP-annovar.log
 
    sed 's/\\x3b/;/g' $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.vcf| sed 's/\\x3d/=/g' > $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.correct.vcf 
+
+   bcftools query -l $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.correct.vcf  > $OUTPUT_DIR/step6_annovar/sampleID.list
 }
 export -f step6_annovar
 
