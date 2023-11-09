@@ -104,6 +104,8 @@ step5_DellyFilter (){
   delly filter \
     -f germline \
     -p \
+    --altaf=0.1 \
+    --gq=15 \
     -o $OUTPUT_DIR/step5_DellyFilter/ROP-Filter.bcf \
     $OUTPUT_DIR/step4_bcftoolsMergeGenotype/ROP-MergeGeno.bcf 2> $OUTPUT_DIR/step5_DellyFilter/ROP-Filter.log
 
