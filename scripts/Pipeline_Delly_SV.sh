@@ -150,7 +150,7 @@ mkdir $OUTPUT_DIR/step4_bcftoolsMergeGenotype/
 #step4_bcftoolsMergeGenotype
 
 mkdir $OUTPUT_DIR/step5_DellyFilter/
-#step5_DellyFilter
+step5_DellyFilter
 
 mkdir $OUTPUT_DIR/step6_annovar/
 step6_annovar
