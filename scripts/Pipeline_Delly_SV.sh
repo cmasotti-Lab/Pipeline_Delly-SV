@@ -124,7 +124,7 @@ step6_annovar (){
       $ANNOVAR_DB -buildver hg38 --remove \
       --protocol refGene,dgvMerged  \
       --operation gx,f --arg '-splicing 5', --polish \
-      --otherinfo --thread ${JOBS} --outfile $OUTPUT_DIR/step6_annovar/ROP-annovar 2> $OUTPUT_DIR/step6_annovar/ROP-annovar.log
+      --otherinfo --thread ${JOBS} --outfile $OUTPUT_DIR/step6_annovar/ROP-annovar > $OUTPUT_DIR/step6_annovar/ROP-annovar.log 2> $OUTPUT_DIR/step6_annovar/ROP-annovar.log2
 
    sed 's/\\x3b/;/g' $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.vcf| sed 's/\\x3d/=/g' > $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.correct.vcf 
 
