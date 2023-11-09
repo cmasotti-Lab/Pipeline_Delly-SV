@@ -122,7 +122,7 @@ step6_annovar (){
 
     $ANNOVAR  \
       --vcfinput $OUTPUT_DIR/step5_DellyFilter/ROP-Filter.vcf \
-      $ANNOVAR_DB -buildver hg38 --remove \
+      $ANNOVAR_DB --buildver hg38 --remove \
       --protocol refGene,dgvMerged  \
       --operation g,f --arg '-splicing 5', --polish \
       --otherinfo --thread ${JOBS} --outfile $OUTPUT_DIR/step6_annovar/ROP-annovar > $OUTPUT_DIR/step6_annovar/ROP-annovar.log 2> $OUTPUT_DIR/step6_annovar/ROP-annovar.log2
