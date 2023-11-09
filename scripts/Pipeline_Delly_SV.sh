@@ -39,6 +39,7 @@ step1_DellyCall (){
   date >> $OUTPUT_LOG
 
   delly call \
+    -t=
     -o $OUTPUT_DIR/step1_DellyCall/$NAME.bcf \
     -g $REF_FASTA/Homo_sapiens_assembly38.fasta \
     $SAMPLE 2> $OUTPUT_DIR/step1_DellyCall/$NAME.log
@@ -123,7 +124,7 @@ step6_annovar (){
       --vcfinput $OUTPUT_DIR/step5_DellyFilter/ROP-Filter.vcf \
       $ANNOVAR_DB -buildver hg38 --remove \
       --protocol refGene,dgvMerged  \
-      --operation gx,f --arg '-splicing 5', --polish \
+      --operation g,f --arg '-splicing 5', --polish \
       --otherinfo --thread ${JOBS} --outfile $OUTPUT_DIR/step6_annovar/ROP-annovar > $OUTPUT_DIR/step6_annovar/ROP-annovar.log 2> $OUTPUT_DIR/step6_annovar/ROP-annovar.log2
 
    sed 's/\\x3b/;/g' $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.vcf| sed 's/\\x3d/=/g' > $OUTPUT_DIR/step6_annovar/ROP-annovar.hg38_multianno.correct.vcf 
