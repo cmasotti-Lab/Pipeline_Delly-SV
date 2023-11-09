@@ -41,7 +41,7 @@ all.sv <-data.frame(all.sv)
 exCol=colnames(all.sv[,-which(names(all.sv) %in% c("Otherinfo1","Otherinfo2","Otherinfo3","ID","index"))])
 all.sv <- select(all.sv, index,all_of(exCol))
 dim(all.sv)   #19142   105 
-fwrite(all.sv, paste0(output,"/tab0.tsv"), quote = F, sep="\t")
+#fwrite(all.sv, paste0(output,"/tab0.tsv"), quote = F, sep="\t")
 
 
 
@@ -86,8 +86,8 @@ table(tab2$GT)
 tab2$SAMPLE <- gsub("\\.", "-", tab2$SAMPLE)
 
 samples.excl <- c('ROP-116','ROP-118','ROP-120','ROP-121','ROP-122','ROP-123','ROP-125','ROP-126',
-                  'ROP-127','ROP-130','ROP-131','ROP-132','ROP-23','ROP-84',
-                  'ROP-83','ROP-107','ROP-81' ,'ROP-91' ,'ROP-129')
+                  'ROP-127','ROP-130','ROP-131','ROP-132','ROP-23','ROP-84')
+#                  'ROP-83','ROP-107','ROP-81' ,'ROP-91' ,'ROP-129')
 samples.excl <-paste(samples.excl, collapse = "|" )
 
 tab2 <- tab2[!grepl(samples.excl, tab2$SAMPLE),]
@@ -120,6 +120,7 @@ colnames(tab3)[names(tab3)=="Freq"]<-"MUTATION_shared"
 shared2exclude <- which((tab3$MUTATION_shared >= 2) )
 nrow(unique(tab3[shared2exclude,"index"]))  #3048 
 tab3 <- tab3[-shared2exclude,] 
+table(tab3$SV)
 
 # selecionando evento em regiões codificadoras
 #==============================================================================#
