@@ -1,0 +1,53 @@
+
+NOTICE: Running with system command <convert2annovar.pl  -includeinfo -allsample -withfreq -format vcf4 /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step5_DellyFilter/ROP-Filter.vcf > /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.avinput>
+NOTICE: Finished reading 59296 lines from VCF file
+NOTICE: A total of 55882 locus in VCF file passed QC threshold, representing 0 SNPs (0 transitions and 0 transversions) and 55628 indels/substitutions
+NOTICE: Finished writing allele frequencies based on 0 SNP genotypes (0 transitions and 0 transversions) and 4728380 indels/substitutions for 85 samples
+WARNING: 254 invalid alternative alleles found in input file
+
+NOTICE: Running with system command </home/scratch60/vlira_21set2023//tools/annovar/table_annovar.pl /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.avinput /home/scratch60/vlira_21set2023//humandb/ --buildver hg38 --remove --protocol refGene,dgvMerged --operation g,f --arg '-splicing 5','' --polish --otherinfo --thread 5 -outfile /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar -otherinfo -nastring .>
+-----------------------------------------------------------------
+NOTICE: Processing operation=g protocol=refGene
+
+NOTICE: Running with system command <annotate_variation.pl -geneanno -buildver hg38 -dbtype refGene -outfile /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene -exonsort -nofirstcodondel /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.avinput /home/scratch60/vlira_21set2023//humandb/ -splicing 5 -thread 5>
+NOTICE: Output files are written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene.variant_function, /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene.exonic_variant_function
+NOTICE: the queryfile /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.avinput contains 55882 lines
+NOTICE: threading is disabled for gene-based annotation on file with less than 1000000 input lines
+NOTICE: Reading gene annotation from /home/scratch60/vlira_21set2023/humandb/hg38_refGene.txt ... Done with 88819 transcripts (including 21511 without coding sequence annotation) for 28307 unique genes
+NOTICE: Processing next batch with 55881 unique variants in 55881 input lines
+NOTICE: Reading FASTA sequences from /home/scratch60/vlira_21set2023/humandb/hg38_refGeneMrna.fa ... Done with 20364 sequences
+WARNING: A total of 606 sequences will be ignored due to lack of correct ORF annotation
+NOTICE: Variants with invalid input format are written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene.invalid_input
+
+NOTICE: Running with system command <coding_change.pl  /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene.exonic_variant_function.orig /home/scratch60/vlira_21set2023//humandb//hg38_refGene.txt /home/scratch60/vlira_21set2023//humandb//hg38_refGeneMrna.fa -alltranscript -out /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene.fa -newevf /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.refGene.exonic_variant_function>
+WARNING: cannot find annotation for NM_001319086 in the genefile /home/scratch60/vlira_21set2023//humandb//hg38_refGene.txt or cannot infer the transcription end site
+WARNING: cannot find annotation for NM_001319086 in the genefile /home/scratch60/vlira_21set2023//humandb//hg38_refGene.txt or cannot infer the transcription end site
+Warning: 47 transcripts are flagged as having potential ORF issues (premature stopcodon or lack of stop codon)
+-----------------------------------------------------------------
+NOTICE: Processing operation=f protocol=dgvMerged
+
+NOTICE: Running system command <annotate_variation.pl -filter -dbtype dgvMerged -buildver hg38 -outfile /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.avinput /home/scratch60/vlira_21set2023//humandb/ -thread 5>
+NOTICE: the --dbtype dgvMerged is assumed to be in generic ANNOVAR database format
+NOTICE: Output file with variants matching filtering criteria is written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_dgvMerged_dropped, and output file with other variants is written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_dgvMerged_filtered
+NOTICE: the queryfile /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.avinput contains 55882 lines
+NOTICE: Creating new threads for query line 1 to 11177
+NOTICE: Creating new threads for query line 11178 to 22354
+NOTICE: Creating new threads for query line 22355 to 33531
+NOTICE: Creating new threads for query line 33532 to 44708
+NOTICE: Creating new threads for query line 44709 to 55882
+NOTICE: Processing next batch with 11177 unique variants in 11177 input lines
+NOTICE: Scanning filter database /home/scratch60/vlira_21set2023/humandb/hg38_dgvMerged.txt...Done
+NOTICE: Processing next batch with 11177 unique variants in 11177 input lines
+NOTICE: Scanning filter database /home/scratch60/vlira_21set2023/humandb/hg38_dgvMerged.txt...Done
+NOTICE: Processing next batch with 11177 unique variants in 11177 input lines
+NOTICE: Scanning filter database /home/scratch60/vlira_21set2023/humandb/hg38_dgvMerged.txt...Done
+NOTICE: Processing next batch with 11177 unique variants in 11177 input lines
+NOTICE: Scanning filter database /home/scratch60/vlira_21set2023/humandb/hg38_dgvMerged.txt...Done
+NOTICE: Processing next batch with 11173 unique variants in 11174 input lines
+NOTICE: Scanning filter database /home/scratch60/vlira_21set2023/humandb/hg38_dgvMerged.txt...Done
+NOTICE: Variants with invalid input format are written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.invalid_input
+-----------------------------------------------------------------
+NOTICE: Multianno output file is written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_multianno.txt
+NOTICE: Reading from /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_multianno.txt
+-----------------------------------------------------------------
+NOTICE: VCF output is written to /home/scratch60/vlira_21set2023//Result_Delly_SV.2023-10-28/step6_annovar/ROP-annovar.hg38_multianno.vcf
