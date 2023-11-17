@@ -200,7 +200,9 @@ somatic.69_Clinical[somatic.69_Clinical$ID_Exoma %in% mutados$ID_Exoma]$dMMR <-"
 
 # CARREGANDO INFORMAÇÕES DE SVs
 #===================================#
-fwrite(tab.count, paste0(output,"/tabela_count.SVs.tsv"), quote = F, sep="\t")
+
+
+sv.events<- fread(file=paste0(output,"/tabela_all.SVs.tsv"), header=T, sep="\t", fill=TRUE, check.names = FALSE)
 
 sv<- fread(file=paste0(output,"/tabela_count.SVs.tsv"), header=T, sep="\t", fill=TRUE, check.names = FALSE)
 sv<- as.data.frame(sv)
@@ -236,11 +238,12 @@ aux[aux$BND >0, ]$status_BND <- "com_SV"
 
 aux <-aux
 eventos_SV <- c("status_SV","status_INV","status_DUP","status_DEL","status_BND")
+respostas <- c("Response1", "Response2", "Response3")
 
 for (sv in eventos_SV) {
   for (resp in respostas) {
-    # sv="status_SV"
-    # resp= "Response1"
+    # sv="status_DEL"
+    # resp= "Response3"
     
     dt3<- matrix(table(subset(aux, select = c(sv, resp))), nr=2)
     dt3
@@ -254,9 +257,9 @@ for (sv in eventos_SV) {
         print(sv)
         print(resp)
         print(as.matrix(table(subset(aux, select = c(sv, resp))), nr=2))
-        print("=============================================================")
+        #print("=============================================================")
         print(resultado)
-        print("=============================================================")
+        #print("=============================================================")
         print(chisq.test(dt3))
         print("=============================================================")
       }
@@ -271,11 +274,12 @@ for (sv in eventos_SV) {
 #==============================================================================
 # PACIENTES COM SV
 #==============================================================================
-sv<- sv %>% 
+somatic.69<- somatic.69 %>% 
   mutate(Gene.refGene = strsplit(as.character(Gene.refGene), ";")) %>% 
   unnest(Gene.refGene)
+merge(somatic.69,subset(somatic.69_Clinical.sv, ))
 
-sv.genes=unique(select(somatic.69, c("Gene.refGene","variable", "type")))
+sv.genes=unique(subset(somatic.69, select=c("Gene.refGene","variable", "type")))
 sv.genes.heatmap= as.data.frame(table(unique(select(sv, c("Gene.refGene","variable")))))
 
 tab<-sv[c("Gene.refGene","variable")]
@@ -336,6 +340,9 @@ for (id in List_Ass) {
   print(chisq.test(dt3))
   print("=====================================================================")
 }
+
+
+
 
 #==============================================================================#
 #         TESTANDO - StructuralVariantAnnotation
