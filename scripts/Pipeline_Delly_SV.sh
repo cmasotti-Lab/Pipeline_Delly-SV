@@ -12,7 +12,7 @@ OUTPUT_DIR=$SCRATCH60"/Result_Delly_SV."$DATA
 
 INPUT_DIR="/home/scratch60/rtorreglosa_12novl2023/preprocessing_READ_result/"
 BAM_FILES=$(find "$INPUT_DIR" -maxdepth 1 -mindepth 1  -name '*.dedup.tags.bqsr.bam')
-JOBS=5
+JOBS=15
 
 #TOOLS e DATABASES
 REF_FASTA="/home/projects2/LIDO/molPathol/oncoseek/nextseq/hg38/"
@@ -151,7 +151,7 @@ mkdir $OUTPUT_DIR/step4_bcftoolsMergeGenotype/
 #step4_bcftoolsMergeGenotype
 
 mkdir $OUTPUT_DIR/step5_DellyFilter/
-step5_DellyFilter
+#step5_DellyFilter
 
 mkdir $OUTPUT_DIR/step6_annovar/
 step6_annovar
