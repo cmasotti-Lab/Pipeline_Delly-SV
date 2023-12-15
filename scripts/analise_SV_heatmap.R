@@ -112,8 +112,7 @@ tab3excl <- tab3[shared2exclude,]
 tab3 <- tab3[-shared2exclude,] 
 table(tab3$ALL)
 # BND  DEL  DUP  INV 
-# 48  247   26 2914
-
+# 48  241   26 2961
 
 # Remover DEL em região: "intronic","intergenic","UTR3","UTR5","upstream;downstream","ncRNA_intronic","UTR5;UTR3","upstream" 
 #==============================================================================#
@@ -134,17 +133,26 @@ table(tab4$ALL,tab4$Func.refGene)
 
 table(tab4$ALL)
 # BND  DEL  DUP  INV 
-# 48  119   26 2914
+# 48  117   25 2391
 table(tab4$SAMPLE,tab4$ALL)
-tab.count <- data.frame(table(tab4$SAMPLE,tab4$ALL))
+
+#==============================================================================#
+#   Excluindo SV com anotação no DGV           ####
+#==============================================================================#
+tab5<-tab4[is.na(tab4$dgvMerged)]
+table(tab5$ALL)
+table(tab5$SAMPLE,tab5$ALL)
+
+tab.count <- data.frame(table(tab5$SAMPLE,tab5$ALL))
 tab.count<- as.data.frame(reshape2::dcast(tab.count, Var1 ~ Var2,  value.var = "Freq"))
 
 tab.count$ALL <- rowSums(tab.count[,c(2:5)])
 tab.count
-sum(tab.count$ALL) #3152
+sum(tab.count$ALL) #460
 
 
 fwrite(tab4, paste0(output,"/tabela_all.SVs.tsv"), quote = F, sep="\t")
+fwrite(tab5, paste0(output,"/tabela_all.SVs.exclDGV.tsv"), quote = F, sep="\t")
 fwrite(tab.count, paste0(output,"/tabela_count.SVs.tsv"), quote = F, sep="\t")
 
 #==============================================================================#
@@ -200,8 +208,6 @@ somatic.69_Clinical[somatic.69_Clinical$ID_Exoma %in% mutados$ID_Exoma]$dMMR <-"
 
 # CARREGANDO INFORMAÇÕES DE SVs
 #===================================#
-
-
 sv.events<- fread(file=paste0(output,"/tabela_all.SVs.tsv"), header=T, sep="\t", fill=TRUE, check.names = FALSE)
 
 sv<- fread(file=paste0(output,"/tabela_count.SVs.tsv"), header=T, sep="\t", fill=TRUE, check.names = FALSE)
@@ -242,8 +248,8 @@ respostas <- c("Response1", "Response2", "Response3")
 
 for (sv in eventos_SV) {
   for (resp in respostas) {
-    # sv="status_DEL"
-    # resp= "Response3"
+    # sv="status_SV"
+    # resp= "Response1"
     
     dt3<- matrix(table(subset(aux, select = c(sv, resp))), nr=2)
     dt3
